@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Patient } from './patient.entity';
+import { Therapist } from './therapist.entity';
 
 @Entity()
 export class Role {
@@ -11,4 +12,9 @@ export class Role {
 
   @OneToMany(() => Patient, (patient) => patient.fkRole)
   patients: Patient[];
+
+  @OneToMany(() => Therapist, (therapist) => therapist.fkRole)
+  therapist: Therapist[];
+
+
 }

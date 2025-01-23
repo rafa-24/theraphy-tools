@@ -1,10 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, Matches, MinLength } from "class-validator";
+import { IsNotEmpty, IsNumber, isString, IsString, Matches, MinLength } from "class-validator";
 
-export class CreatePatientDto {
+export class CreateTherapistDto {
 
     @IsNotEmpty()
     @IsString()
-    patientName: string;
+    name: string;
 
     @IsNotEmpty()
     @IsString()
@@ -26,6 +26,13 @@ export class CreatePatientDto {
 
     @IsNotEmpty()
     @IsString()
-    @MinLength(8)
+    universityDegree: string;
+
+    @IsNotEmpty()
+    @IsNumber()
+    workExperience: number;
+
+    @IsNotEmpty()
+    @IsString()
     password: string;
 }

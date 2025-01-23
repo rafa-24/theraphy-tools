@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { Country } from './country.entity';
 import { Role } from './role.entity';
+import { IsEmail } from 'class-validator';
 
 @Entity()
 export class Therapist {
@@ -16,15 +17,15 @@ export class Therapist {
   @Column({name:'telephone_number'})
   telephoneNumber: string;
 
-  @OneToOne(() => Country)
-  @JoinColumn()
+
+  @ManyToOne(() => Country, (country) => country.therapist, { onDelete: 'SET NULL', nullable: true })
   fkCountry: Country;
 
   @Column({name:'email'})
+  @IsEmail()
   email: string;
 
-  @OneToOne(() => Role)
-  @JoinColumn()
+  @ManyToOne(() => Role, (role) => role.therapist, { onDelete: 'SET NULL', nullable: true })
   fkRole: Role;
 
   @Column({name:'university_degree'})
