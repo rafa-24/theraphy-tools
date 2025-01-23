@@ -12,7 +12,8 @@ import { Therapist } from 'src/context/users/model/entities/therapist.entity';
             host: 'localhost',
             port: 3306,
             username: 'root',
-            database: 'teraphy',
+            database: 'therapy',
+            password: '12345678',
             entities: [
                 Role,
                 Country,

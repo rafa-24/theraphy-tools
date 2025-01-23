@@ -37,9 +37,9 @@ export class Therapist {
   @Column({name:'password'})
   password: string;
 
-  @Column({name:'code_verification'})
+  @Column({name:'code_verification', default: null})
   verificationCode: string;
 
-  @Column({name:'is_valid_verification_code'})
+  @Column({name:'is_valid_verification_code', default: null})
   isValidVerificationCode: boolean;
 }

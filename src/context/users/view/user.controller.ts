@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from '../controller/user.service';
 import { CreatePatientDto } from '../dto/create-patient.dto';
 import { CreateTherapistDto } from '../dto/create-therapist.dto';
@@ -22,6 +22,11 @@ export class UserController {
         @Body() therapistBody: CreateTherapistDto
     ) {
         return await this.userService.registerTherapist(therapistBody);
+    }
+
+    @Get()
+    async searchUser() {
+        return await this.userService.searchUser('linag@gmail.com');
     }
 
 }

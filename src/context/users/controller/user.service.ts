@@ -9,6 +9,9 @@ import { Therapist } from '../model/entities/therapist.entity';
 import { validatePassword } from 'src/common/helpers/validate-password';
 import { CreateResource } from 'src/common/interface/create/response-create-resource.interface';
 import { validateEmail } from 'src/common/helpers/validate-email';
+import { createExceptionError } from 'src/common/exceptions/create-exception-error';
+import { PatientOutputInterface } from 'src/common/interface/output/patient-output.interface';
+import { TherapistOutputInterface } from 'src/common/interface/output/therapist-output.interface';
 
 @Injectable()
 export class UserService {
@@ -81,4 +84,20 @@ export class UserService {
             return err;
         }
     }
+
+    async searchUser(userEmail: string): Promise<PatientOutputInterface | TherapistOutputInterface | CreateResource  > {
+        try {
+            const userPatient  = await this.patientRepository.findOne({relations: ['fkCountry', 'fkRole'], where: {email: userEmail}});
+            const userTherapist  = await this.therapistRepository.findOne({ relations: ['fkCountry', 'fkRole'], where: {email: userEmail}});
+
+            if (userPatient && !userTherapist) return userPatient;
+            if (userTherapist && !userPatient) return userTherapist;
+            if (!userPatient && !userTherapist) return {success: true, message: 'This user does not exist'};
+
+        } catch (err) {
+            createExceptionError(err);
+        }
+    }
+
+
 }
