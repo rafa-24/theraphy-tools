@@ -85,7 +85,7 @@ export class UserService {
         }
     }
 
-    async searchUser(userEmail: string): Promise<PatientOutputInterface | TherapistOutputInterface | CreateResource  > {
+    async searchUser(userEmail: string): Promise<PatientOutputInterface | TherapistOutputInterface | CreateResource> {
         try {
             const userPatient  = await this.patientRepository.findOne({relations: ['fkCountry', 'fkRole'], where: {email: userEmail}});
             const userTherapist  = await this.therapistRepository.findOne({ relations: ['fkCountry', 'fkRole'], where: {email: userEmail}});

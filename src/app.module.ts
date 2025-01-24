@@ -6,6 +6,7 @@ import { MysqlDatabaseModule } from './config/mysql-database/mysql-database/mysq
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AuthModule } from './context/auth/auth.module';
 
+
 @Module({
   imports: [
     MysqlDatabaseModule,

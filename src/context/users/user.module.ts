@@ -15,6 +15,7 @@ import { TherapistSubscriber } from './subscribers/therapist.suscriber';
     TypeOrmModule.forFeature([Patient,Therapist, Country, Role])
   ],
   providers: [UserService, PatientSubscriber, TherapistSubscriber],
-  controllers: [UserController]
+  controllers: [UserController],
+  exports: [UserService]
 })
 export class UserModule {}
