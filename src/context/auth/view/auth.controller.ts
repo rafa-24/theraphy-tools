@@ -10,4 +10,9 @@ export class AuthController {
     async signIn(@Body() data: LoginDto) {
         return await this.authService.signIn(data);
     }
+
+    @Post('/reset-password')
+    async sendPasswordReset(@Body('userEmail') email: string ) {
+        return this.authService.sendPasswordReset(email);
+    }
 }

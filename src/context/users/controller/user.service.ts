@@ -99,5 +99,26 @@ export class UserService {
         }
     }
 
+    async updateVerificationCode(
+        user: PatientOutputInterface | TherapistOutputInterface,
+        code: string
+    ): Promise<CreateResource> {
+        try {
+            if (user.fkRole.roleName === 'patient') {
+                const updateCode = await this.patientRepository.update({email: user.email}, {verificationCode: code});
+                return (updateCode.affected > 0) ? { success:true, status: 204, message: `code was generated reset password to patient user with patient ${user.name} ${user.paternalSurname}`} :
+                { success:false, status: 400, message:'Error when generating password reset code user patient.'};
+            }
+
+            if (user.fkRole.roleName === 'therapist') {
+                const updateCode = await this.therapistRepository.update({email: user.email}, {verificationCode: code});
+                return (updateCode.affected > 0) ? { success:true, status: 204, message: `code was generated reset password to patient user with therapist id ${user.name}  ${user.paternalSurname}` } :
+                { success:false, status: 400, message:'Error when generating password reset code user therapist.'};
+            }
+        } catch (error) {
+            return error;
+        }
+    }
+
 
 }
