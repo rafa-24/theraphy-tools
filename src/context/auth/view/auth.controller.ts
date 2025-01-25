@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Put } from '@nestjs/common';
 import { AuthService } from '../controller/auth.service';
 import { LoginDto } from '../dto/login.dto';
+import { ResetPasswordDto } from '../dto/reset-password.dto.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -14,5 +15,10 @@ export class AuthController {
     @Post('/reset-password')
     async sendPasswordReset(@Body('userEmail') email: string ) {
         return this.authService.sendPasswordReset(email);
+    }
+
+    @Put('/change-password')
+    async changePassword(@Body() data: ResetPasswordDto ) {
+        return await this.authService.resetPassword(data);
     }
 }

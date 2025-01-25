@@ -8,6 +8,7 @@ import { CreateResource } from 'src/common/interface/create/response-create-reso
 import { MailService } from 'src/context/mail/mail.service';
 import { TherapistOutputInterface } from 'src/common/interface/output/therapist-output.interface';
 import { PatientOutputInterface } from 'src/common/interface/output/patient-output.interface';
+import { ResetPasswordDto } from '../dto/reset-password.dto.interface';
 
 @Injectable()
 export class AuthService {
@@ -47,17 +48,14 @@ export class AuthService {
         }
     }
 
-    async sendPasswordReset(userEmail: string): Promise<any> {
+    async sendPasswordReset(userEmail: string): Promise<CreateResource |  TherapistOutputInterface | PatientOutputInterface > {
         try {
             const user = await this.userService.searchUser(userEmail) as TherapistOutputInterface | PatientOutputInterface;
-            console.log('user', user);
             if (!user)  return user;
 
             //actualizar codigo de verificacion
             const code: string = await this.mailService.sendPasswordReset(userEmail);
-            console.log('code', code);
             const generateVerificationCode = await this.userService.updateVerificationCode(user,code);
-            console.log('generateVerificationCode', generateVerificationCode)
 
             return (!generateVerificationCode.success) ? generateVerificationCode : generateVerificationCode;
 
@@ -65,6 +63,23 @@ export class AuthService {
             return err;
         }
     }
+
+    async resetPassword(resetPassDto: ResetPasswordDto): Promise<any> {
+        try {
+
+            const {email, codeVerification, pass} = resetPassDto;
+            const user: any = await this.userService.searchUser(email);
+            if (!user)  return user;
+
+            // actualiza contraseña y actualiza
+            const updatedPassword = await this.userService.resetPassword(user, codeVerification, pass);
+            return  (!updatedPassword.success) ? updatedPassword : updatedPassword;
+        } catch (error) {
+            return error;
+        }
+    }
+
+
 
 
 }

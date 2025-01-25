@@ -105,15 +105,58 @@ export class UserService {
     ): Promise<CreateResource> {
         try {
             if (user.fkRole.roleName === 'patient') {
-                const updateCode = await this.patientRepository.update({email: user.email}, {verificationCode: code});
+                const updateCode = await this.patientRepository.update({email: user.email}, {
+                    verificationCode: code,
+                    isValidVerificationCode: false
+                });
                 return (updateCode.affected > 0) ? { success:true, status: 204, message: `code was generated reset password to patient user with patient ${user.name} ${user.paternalSurname}`} :
                 { success:false, status: 400, message:'Error when generating password reset code user patient.'};
             }
 
             if (user.fkRole.roleName === 'therapist') {
-                const updateCode = await this.therapistRepository.update({email: user.email}, {verificationCode: code});
+                const updateCode = await this.therapistRepository.update({email: user.email}, {
+                    verificationCode: code,
+                    isValidVerificationCode: false
+                });
                 return (updateCode.affected > 0) ? { success:true, status: 204, message: `code was generated reset password to patient user with therapist id ${user.name}  ${user.paternalSurname}` } :
                 { success:false, status: 400, message:'Error when generating password reset code user therapist.'};
+            }
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async resetPassword(
+        user: PatientOutputInterface | TherapistOutputInterface,
+        code: string,
+        pass: string
+    ): Promise<any> {
+        try {
+            if (user.fkRole.roleName === 'patient') {
+                if (user.verificationCode === code) {
+                    const hashedPassword = await hashPassword(pass);
+                    const updateInformation = await this.patientRepository.update({email: user.email}, {
+                        password: hashedPassword,
+                        verificationCode: null,
+                        isValidVerificationCode: true
+                    });
+
+                    return updateInformation.affected > 0 ? {success: true, status: 204, message: `password updated user with patient ${user.name} ${user.paternalSurname}` } :
+                    {success: false, status:400, message: 'patient user could not update password' };
+                }
+            }
+            if (user.fkRole.roleName === 'therapist') {
+                if (user.verificationCode === code) {
+                    const hashedPassword = await hashPassword(pass);
+                    const updateInformation = await this.therapistRepository.update({email: user.email}, {
+                        password: hashedPassword,
+                        verificationCode: null,
+                        isValidVerificationCode: true
+                    });
+
+                    return updateInformation.affected > 0 ? {success: true, status: 204, message: `password updated user with therapist ${user.name} ${user.paternalSurname}` } :
+                    {success: false, status:400, message: 'patient user could not update password' };
+                }
             }
         } catch (error) {
             return error;
