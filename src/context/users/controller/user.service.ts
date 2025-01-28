@@ -85,14 +85,14 @@ export class UserService {
         }
     }
 
-    async searchUser(userEmail: string): Promise<PatientOutputInterface | TherapistOutputInterface | CreateResource> {
+    async searchUser(userEmail: string): Promise<PatientOutputInterface | TherapistOutputInterface | CreateResource > {
         try {
             const userPatient  = await this.patientRepository.findOne({relations: ['fkCountry', 'fkRole'], where: {email: userEmail}});
             const userTherapist  = await this.therapistRepository.findOne({ relations: ['fkCountry', 'fkRole'], where: {email: userEmail}});
 
-            if (userPatient && !userTherapist) return userPatient;
+            if (userPatient && !userTherapist) return  userPatient;
             if (userTherapist && !userPatient) return userTherapist;
-            if (!userPatient && !userTherapist) return {success: true, message: 'This user does not exist'};
+            if (!userPatient && !userTherapist) return {success: false, message: 'This user does not exist'};
 
         } catch (err) {
             createExceptionError(err);
@@ -162,6 +162,4 @@ export class UserService {
             return error;
         }
     }
-
-
 }
