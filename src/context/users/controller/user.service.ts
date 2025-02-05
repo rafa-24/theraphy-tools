@@ -12,6 +12,7 @@ import { validateEmail } from 'src/common/helpers/validate-email';
 import { createExceptionError } from 'src/common/exceptions/create-exception-error';
 import { PatientOutputInterface } from 'src/common/interface/output/patient-output.interface';
 import { TherapistOutputInterface } from 'src/common/interface/output/therapist-output.interface';
+import { Country } from '../model/entities/country.entity';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,8 @@ export class UserService {
         private  patientRepository: Repository<Patient>,
         @InjectRepository(Therapist)
         private  therapistRepository: Repository<Therapist>,
+        @InjectRepository(Country)
+        private  countryRepository: Repository<Country>,
     ) {}
 
     async registerPatient(userDto: CreatePatientDto): Promise<{ success: boolean, status?: number, message: string}> {
@@ -162,4 +165,16 @@ export class UserService {
             return error;
         }
     }
+
+    async getListCountries() {
+        try {
+            const listCountries = await this.countryRepository.find();
+            return listCountries;
+        } catch (error) {
+            return error;
+        }
+
+    }
+
+
 }

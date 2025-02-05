@@ -24,9 +24,9 @@ export class UserController {
         return await this.userService.registerTherapist(therapistBody);
     }
 
-    @Get()
-    async searchUser() {
-        return await this.userService.searchUser('linag@gmail.com');
+    @Get('countries')
+    async listCountries() {
+        return await this.userService.getListCountries();
     }
 
 }

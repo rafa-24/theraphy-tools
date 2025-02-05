@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Country } from './country.entity';
 import { Role } from './role.entity';
 import { IsEmail } from 'class-validator';
+import { TherapeuticForm } from 'src/context/form/model/entities/therapeutic-form.entity';
 
 @Entity()
 export class Therapist {
@@ -42,4 +43,7 @@ export class Therapist {
 
   @Column({name:'is_valid_verification_code', default: null})
   isValidVerificationCode: boolean;
+
+  @OneToMany(() => TherapeuticForm, (therapeuticForm) => therapeuticForm.fkTherapist)
+  form: TherapeuticForm[];
 }
