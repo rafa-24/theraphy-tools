@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Answer } from 'src/context/form/model/entities/answer.entity';
+import { Question } from 'src/context/form/model/entities/question.entity';
+import { TherapeuticForm } from 'src/context/form/model/entities/therapeutic-form.entity';
 import { Country } from 'src/context/users/model/entities/country.entity';
 import { Patient } from 'src/context/users/model/entities/patient.entity';
 import { Role } from 'src/context/users/model/entities/role.entity';
@@ -18,7 +21,10 @@ import { Therapist } from 'src/context/users/model/entities/therapist.entity';
                 Role,
                 Country,
                 Patient,
-                Therapist
+                Therapist,
+                TherapeuticForm,
+                Question,
+                Answer
             ],
             synchronize: true,
         })

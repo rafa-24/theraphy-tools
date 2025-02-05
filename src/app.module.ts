@@ -8,6 +8,7 @@ import { AuthModule } from './context/auth/auth.module';
 import { MailModule } from './context/mail/mail.module';
 import { MailService } from './context/mail/mail.service';
 import { MailController } from './context/mail/mail.controller';
+import { FormModule } from './context/form/form.module';
 
 
 @Module({
@@ -16,7 +17,8 @@ import { MailController } from './context/mail/mail.controller';
     UserModule,
     EventEmitterModule.forRoot(),
     AuthModule,
-    MailModule
+    MailModule,
+    FormModule
   ],
   controllers: [AppController, MailController],
   providers: [AppService, MailService],
